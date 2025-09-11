@@ -28,7 +28,7 @@ Ele oferece funcionalidades para:
 
 O projeto segue a estrutura padrão de uma aplicação **Spring Boot**:
 
-```plaintext
+````
 .
 ├── src
 │   ├── main
@@ -48,7 +48,9 @@ O projeto segue a estrutura padrão de uma aplicação **Spring Boot**:
 │               └── codingSamurai
 │                   └── libraryMS
 └── pom.xml
-Principais diretórios
+````
+
+# Principais diretórios
 
 controllers/: Controladores REST que lidam com as requisições HTTP
 
@@ -64,7 +66,7 @@ resources/: Configurações (ex.: application.properties)
 
 test/: Testes unitários e de integração
 
-▶️ Como Executar o Projeto
+# ▶️ Como Executar o Projeto
 1. Pré-requisitos
 
 JDK 17 ou superior
@@ -82,7 +84,8 @@ mvn spring-boot:run
 A aplicação estará disponível em:
 http://localhost:8080
 
-🔗 Endpoints da API (Exemplos)
+
+# 🔗 Endpoints da API (Exemplos)
 Livros
 
 GET /api/books → Lista todos os livros
@@ -119,7 +122,8 @@ PUT /api/loans/{id} → Atualiza um empréstimo existente
 
 DELETE /api/loans/{id} → Exclui um empréstimo
 
-🤝 Contribuição
+
+# 🤝 Contribuição
 
 Contribuições são bem-vindas!
 Sinta-se à vontade para abrir issues e pull requests.
