@@ -1,42 +1,35 @@
-LibraryMS
+# 📚 LibraryMS
 
-Este é um projeto de sistema de gerenciamento de biblioteca desenvolvido em Java com Spring Boot.
+Este é um projeto de **sistema de gerenciamento de biblioteca** desenvolvido em **Java com Spring Boot**.
 
-Visão Geral
+---
 
-O LibraryMS é uma aplicação que permite o gerenciamento de livros, usuários e empréstimos em uma biblioteca. Ele oferece funcionalidades para:
+## 📖 Visão Geral
 
-•
-Cadastro e consulta de livros.
+O **LibraryMS** é uma aplicação que permite o gerenciamento de livros, usuários e empréstimos em uma biblioteca.  
+Ele oferece funcionalidades para:
 
-•
-Cadastro e consulta de usuários.
+- 📘 Cadastro e consulta de **livros**  
+- 👤 Cadastro e consulta de **usuários**  
+- 🔄 Registro e controle de **empréstimos e devoluções**
 
-•
-Registro e controle de empréstimos e devoluções.
+---
 
-Tecnologias Utilizadas
+## 🛠️ Tecnologias Utilizadas
 
-•
-Java: Linguagem de programação principal.
+- ☕ **Java** – Linguagem de programação principal  
+- 🚀 **Spring Boot** – Framework para construção de aplicações Java robustas e escaláveis  
+- 📦 **Maven** – Automação de build e gerenciamento de dependências  
+- 🗄️ **H2 Database** – Banco de dados em memória para desenvolvimento e testes (configurável para outros bancos)
 
-•
-Spring Boot: Framework para construção de aplicações Java robustas e escaláveis.
+---
 
-•
-Maven: Ferramenta de automação de build e gerenciamento de dependências.
+## 📂 Estrutura do Projeto
 
-•
-H2 Database: Banco de dados em memória para desenvolvimento e testes (pode ser configurado para outros bancos de dados).
+O projeto segue a estrutura padrão de uma aplicação **Spring Boot**:
 
-Estrutura do Projeto
-
-O projeto segue a estrutura padrão de uma aplicação Spring Boot:
-
-Plain Text
-
-
-. 
+```plaintext
+.
 ├── src
 │   ├── main
 │   │   ├── java
@@ -55,120 +48,78 @@ Plain Text
 │               └── codingSamurai
 │                   └── libraryMS
 └── pom.xml
+Principais diretórios
+
+controllers/: Controladores REST que lidam com as requisições HTTP
+
+dto/: Objetos de transferência de dados (DTOs) usados entre camadas
+
+entities/: Entidades de domínio que representam tabelas do banco
+
+repositories/: Interfaces de repositório com Spring Data JPA
+
+services/: Lógica de negócio da aplicação
+
+resources/: Configurações (ex.: application.properties)
+
+test/: Testes unitários e de integração
+
+▶️ Como Executar o Projeto
+1. Pré-requisitos
+
+JDK 17 ou superior
+
+Maven 3.x
+
+2. Clonar o repositório
+git clone https://github.com/KarineA213/LibraryMS.git
+cd LibraryMS
+
+3. Compilar e executar
+mvn spring-boot:run
 
 
-•
-src/main/java/com/codingSamurai/libraryMS/controllers: Contém os controladores REST que lidam com as requisições HTTP.
+A aplicação estará disponível em:
+http://localhost:8080
 
-•
-src/main/java/com/codingSamurai/libraryMS/dto: Contém os objetos de transferência de dados (DTOs) usados para comunicação entre camadas.
+🔗 Endpoints da API (Exemplos)
+Livros
 
-•
-src/main/java/com/codingSamurai/libraryMS/entities: Contém as entidades de domínio que representam as tabelas do banco de dados.
+GET /api/books → Lista todos os livros
 
-•
-src/main/java/com/codingSamurai/libraryMS/repositories: Contém as interfaces de repositório para acesso a dados, utilizando Spring Data JPA.
+GET /api/books/{id} → Obtém um livro por ID
 
-•
-src/main/java/com/codingSamurai/libraryMS/services: Contém a lógica de negócio da aplicação.
+POST /api/books → Adiciona um novo livro
 
-•
-src/main/resources: Contém arquivos de configuração, como application.properties e templates.
+PUT /api/books/{id} → Atualiza um livro existente
 
-•
-src/test: Contém os testes unitários e de integração.
+DELETE /api/books/{id} → Exclui um livro
 
-•
-pom.xml: Arquivo de configuração do Maven, listando dependências e informações do projeto.
+Usuários
 
-Como Executar o Projeto
+GET /api/users → Lista todos os usuários
 
-Para executar este projeto localmente, siga os passos abaixo:
+GET /api/users/{id} → Obtém um usuário por ID
 
-1.
-Pré-requisitos:
+POST /api/users → Adiciona um novo usuário
 
-•
-Java Development Kit (JDK) 17 ou superior.
+PUT /api/users/{id} → Atualiza um usuário existente
 
-•
-Maven 3.x.
+DELETE /api/users/{id} → Exclui um usuário
 
+Empréstimos
 
+GET /api/loans → Lista todos os empréstimos
 
-2.
-Clonar o Repositório:
+GET /api/loans/{id} → Obtém um empréstimo por ID
 
-3.
-Compilar e Executar:
+POST /api/loans → Registra um novo empréstimo
 
-Endpoints da API (Exemplos)
+PUT /api/loans/{id} → Atualiza um empréstimo existente
 
-•
-Livros:
+DELETE /api/loans/{id} → Exclui um empréstimo
 
-•
-GET /api/books: Lista todos os livros.
+🤝 Contribuição
 
-•
-GET /api/books/{id}: Obtém um livro por ID.
-
-•
-POST /api/books: Adiciona um novo livro.
-
-•
-PUT /api/books/{id}: Atualiza um livro existente.
-
-•
-DELETE /api/books/{id}: Exclui um livro.
-
-
-
-•
-Usuários:
-
-•
-GET /api/users: Lista todos os usuários.
-
-•
-GET /api/users/{id}: Obtém um usuário por ID.
-
-•
-POST /api/users: Adiciona um novo usuário.
-
-•
-PUT /api/users/{id}: Atualiza um usuário existente.
-
-•
-DELETE /api/users/{id}: Exclui um usuário.
-
-
-
-•
-Empréstimos:
-
-•
-GET /api/loans: Lista todos os empréstimos.
-
-•
-GET /api/loans/{id}: Obtém um empréstimo por ID.
-
-•
-POST /api/loans: Registra um novo empréstimo.
-
-•
-PUT /api/loans/{id}: Atualiza um empréstimo existente.
-
-•
-DELETE /api/loans/{id}: Exclui um empréstimo.
-
-
-
-Contribuição
-
-Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests.
-
-Licença
-
-Este projeto está licenciado sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
-
+Contribuições são bem-vindas!
+Sinta-se à vontade para abrir issues e pull requests.
