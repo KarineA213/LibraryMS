@@ -1,40 +1,47 @@
 package com.codingSamurai.libraryMS.services;
 
 import com.codingSamurai.libraryMS.dto.LoanDto;
+import com.codingSamurai.libraryMS.dto.LoanInsertDto;
+import com.codingSamurai.libraryMS.dto.LoanItemsDto;
+import com.codingSamurai.libraryMS.dto.StudentsDto;
+import com.codingSamurai.libraryMS.entities.Books;
 import com.codingSamurai.libraryMS.entities.Loan;
 import com.codingSamurai.libraryMS.entities.LoanItems;
+import com.codingSamurai.libraryMS.entities.Students;
+import com.codingSamurai.libraryMS.entities.enums.LoanStatus;
 import com.codingSamurai.libraryMS.repositories.BooksRepository;
 import com.codingSamurai.libraryMS.repositories.LoanRepository;
 import com.codingSamurai.libraryMS.repositories.StudentsRepository;
 import com.codingSamurai.libraryMS.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
-import org.hibernate.mapping.List;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.transaction.annotation.Transactional; // Use este Transactional
 
-import java.util.stream.Collectors;
+import java.time.LocalDateTime;
+import java.util.Optional;
+// import org.springframework.transaction.annotation.Propagation; // Não é necessário aqui
+
 
 @Service
 public class LoanService {
 
+    // @Autowired
+    // private BooksRepository booksRepository;
+
     @Autowired
     private LoanRepository repository;
-
 
     @Autowired
     private StudentsRepository studentsRepository;
 
     @Autowired
     private BooksRepository booksRepository;
-    @Autowired
-    private InternalResourceViewResolver internalResourceViewResolver;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public LoanDto findById(long id) {
         Loan entity = repository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Resource not found with id " + id)
@@ -42,56 +49,74 @@ public class LoanService {
         return new LoanDto(entity);
     }
 
-    @Transactional
-    public Page<LoanDto>  findAll(Pageable pageable) {
+    @Transactional(readOnly = true)
+    public Page<LoanDto> findAll(Pageable pageable) {
         Page<Loan> result = repository.findAll(pageable);
-        return result.map(loan -> new LoanDto(loan));
-
+        return result.map(LoanDto::new);
     }
 
-
     @Transactional
-    public LoanDto insert(LoanDto loans) {
+    public LoanDto insert(LoanInsertDto dto) {
 
-        Loan loan = new Loan();
-        copyDtoToEntity(loans, loan);
-        Loan savedLoan = repository.save(loan);
-        return new LoanDto(savedLoan);
-
+        Loan entity = new Loan();
+        copyDtoToEntity(dto, entity);
+        entity = repository.save(entity);
+        return new LoanDto(entity);
     }
 
-
     @Transactional
-    public LoanDto update(Long id, LoanDto source) {
-
+    public LoanDto update(Long id, LoanDto dto) {
         try {
             Loan entity = repository.getReferenceById(id);
-            copyDtoToEntity(source, entity);
+            copyUpdateDtoToEntity(dto, entity);
             entity = repository.save(entity);
             return new LoanDto(entity);
-
-        }catch (EntityNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Resource not found with id " + id);
+        }
+    }
+
+    private void copyUpdateDtoToEntity(LoanDto dto, Loan entity) {
+
+        entity.setLoanDate(LocalDateTime.now());
+        entity.setDueDate(dto.getDueDate());
+        entity.setReturnDate(dto.getReturnDate());
+        entity.setStatus(dto.getStatus());
+
+    }
+
+    private void copyDtoToEntity(LoanInsertDto dto, Loan entity) {
+
+
+//        entity.setStudent(dto.getStudent().toEntity());
+
+        Optional<Students> students  = studentsRepository.findById(entity.getId());
+        entity.setLoanDate(LocalDateTime.now());
+        entity.setStatus(LoanStatus.ACTIVE);
+        entity.setReturnDate(null);
+        entity.setDueDate(dto.getDueDate());
+
+        if (dto.getLoanItems() != null) {
+            for (LoanItemsDto itemDto : dto.getLoanItems()) {
+
+                LoanItems loanItem = new LoanItems();
+                Books book = booksRepository.findById(itemDto.getBookId()) // Assumindo que LoanItemsDto tem getBookId()
+                        .orElseThrow(() -> new ResourceNotFoundException("Book not found with id " + itemDto.getBookId()));
+
+                loanItem.setBook(book);
+                loanItem.setLoan(entity);
+                entity.getLoanItems().add(loanItem);
+            }
         }
     }
 
 
 
-    private void copyDtoToEntity(LoanDto source, Loan entity) {
-        entity.setStudent(source.getStudent()); // Assume que StudentDto tem um método toEntity()
+    public void delete(Long id) {
 
-        entity.setLoanDate(source.getLoanDate());
-        entity.setDueDate(source.getDueDate());
-        entity.setReturnDate(source.getReturnDate());
-        entity.setStatus(source.getStatus());
-
-
-
-
+        if (!repository.existsById(id)) {
+            throw new ResourceNotFoundException("Resource not found with id " + id);
+        }
+        repository.deleteById(id);
     }
-
-
 }
-
-
-

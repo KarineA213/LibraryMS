@@ -3,71 +3,120 @@ package com.codingSamurai.libraryMS.dto;
 import com.codingSamurai.libraryMS.entities.Loan;
 import com.codingSamurai.libraryMS.entities.Students;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class StudentsDto {
 
-
     private Long id;
-
     private String name;
     private String course;
     private String email;
     private String phone;
+    private List<StudentsLoansDto> studentsLoans;
 
-    private List<Loan> borrowedBooks;
-    private List<Loan> returnedBooks;
 
-    public StudentsDto(Long id, String name, String course, String email, String phone, List<Loan> borrowedBooks, List<Loan> returnedBooks) {
+
+    public StudentsDto(Long id, String name, String course, String email, String phone,
+
+                       List<LoanDto> borrowedBooks, List<LoanDto> returnedBooks, List<StudentsLoansDto> studentsLoans) {
+
         this.id = id;
         this.name = name;
         this.course = course;
         this.email = email;
         this.phone = phone;
-        this.borrowedBooks = borrowedBooks;
-        this.returnedBooks = returnedBooks;
+        this.studentsLoans = studentsLoans;
+
+//        this.loans =  new ArrayList<StudentsLoansDto>();
+//        this.borrowedBooks = borrowedBooks;
+//        this.returnedBooks = returnedBooks;
     }
 
-    public StudentsDto() {
-    }
+
 
     public StudentsDto(Students entity) {
-        this.id = entity.getId();
-        this.name = entity.getName();
-        this.course = entity.getCourse();
-        this.email = entity.getEmail();
-        this.phone = entity.getPhone();
-        this.borrowedBooks = entity.getBorrowedBooks();
-        this.returnedBooks = entity.getReturnedBooks();
+        id = entity.getId();
+        name = entity.getName();
+        course = entity.getCourse();
+        email = entity.getEmail();
+        phone = entity.getPhone();
+        this.studentsLoans = entity.getBorrowedBooks().stream()
+                .flatMap(loan -> loan.getLoanItems().stream())//flatmap achata tudo e faz tudo parecer um grande loan com apenas informações importantes
+                .map(StudentsLoansDto::new).collect(Collectors.toList());
 
+    }
 
+    public List<StudentsLoansDto> getStudentsLoans() {
+        return studentsLoans;
+    }
+
+    public void setStudentsLoans(List<StudentsLoansDto> studentsLoans) {
+        this.studentsLoans = studentsLoans;
     }
 
     public Long getId() {
+
         return id;
+
     }
 
     public String getName() {
+
         return name;
+
     }
 
     public String getCourse() {
+
         return course;
+
     }
 
-    public String getEmail() {
+
+   public String getEmail() {
+
         return email;
+
     }
 
     public String getPhone() {
+
         return phone;
+
     }
 
-    public List<Loan> getBorrowedBooks() {
-        return borrowedBooks;
+
+
+    public void setId(Long id) {
+
+        this.id = id;
+
     }
 
-    public List<Loan> getReturnedBooks() {
-        return returnedBooks;
+    public void setName(String name) {
+
+        this.name = name;
+
     }
+
+    public void setCourse(String course) {
+
+        this.course = course;
+
+    }
+
+    public void setEmail(String email) {
+
+        this.email = email;
+
+    }
+
+    public void setPhone(String phone) {
+
+        this.phone = phone;
+
+    }
+
 }

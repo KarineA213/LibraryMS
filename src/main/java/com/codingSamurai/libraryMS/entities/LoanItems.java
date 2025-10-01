@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 
 import java.util.EnumMap;
 
+
 @Entity
 public class LoanItems {
 
@@ -18,9 +19,8 @@ public class LoanItems {
     @JoinColumn(name = "loan_id")
     private Loan loan;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "books_id")
-
     private Books book;
 
     @Enumerated(EnumType.STRING)
@@ -30,17 +30,19 @@ public class LoanItems {
     private Condition conditionOnReturn;
 
 
+
     public LoanItems() {
     }
 
     public LoanItems(Long id, Loan loan, Books book, Condition conditionOnLoan, Condition conditionOnReturn) {
         this.id = id;
-        this.loan = loan;
+//        this.loan = loan;
         this.book = book;
         this.conditionOnLoan = conditionOnLoan;
         this.conditionOnReturn = conditionOnReturn;
     }
 
+    // Getters e Setters
     public Long getId() {
         return id;
     }
@@ -80,4 +82,7 @@ public class LoanItems {
     public void setConditionOnReturn(Condition conditionOnReturn) {
         this.conditionOnReturn = conditionOnReturn;
     }
+
+
 }
+

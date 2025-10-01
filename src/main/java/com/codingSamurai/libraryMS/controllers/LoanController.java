@@ -1,15 +1,18 @@
 package com.codingSamurai.libraryMS.controllers;
 
 import com.codingSamurai.libraryMS.dto.LoanDto;
+import com.codingSamurai.libraryMS.dto.LoanInsertDto;
+import com.codingSamurai.libraryMS.entities.Loan;
 import com.codingSamurai.libraryMS.services.LoanService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/loans")
@@ -32,8 +35,24 @@ public class LoanController {
         return ResponseEntity.ok(loans);
     }
 
+    @PostMapping()
+    public ResponseEntity<LoanDto> insert(@Valid @RequestBody LoanInsertDto loanInsertDto) {
 
+        LoanDto createdLoanDto = service.insert(loanInsertDto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}").buildAndExpand(createdLoanDto.getId()).toUri();
+                return ResponseEntity.created(uri).body(createdLoanDto);
+    }
 
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<LoanDto>  update(@PathVariable Long id, @Valid @RequestBody LoanDto loanDto) {
+        LoanDto updatedDto = service.update(id, loanDto);
+        return ResponseEntity.ok(updatedDto);
+    }
 
-
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<LoanDto> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -7,51 +7,35 @@ import com.codingSamurai.libraryMS.entities.enums.Condition;
 
 public class LoanItemsDto {
 
-    private Long id;
-    private Long loanId;
+
     private Long bookId;
+    private Long loanId;
     private String bookTitle;
-    private Condition conditionOnLoan;
-    private Condition conditionOnReturn;
+    private String bookAuthor;
 
     public LoanItemsDto() {
     }
 
-    public LoanItemsDto(Long id, Long loanId, Long bookId, String bookTitle,
-                        Condition conditionOnLoan, Condition conditionOnReturn) {
-        this.id = id;
+    public LoanItemsDto( Long loanId, Long bookId, String bookTitle, String bookAuthor) {
+
         this.loanId = loanId;
         this.bookId = bookId;
         this.bookTitle = bookTitle;
-        this.conditionOnLoan = conditionOnLoan;
-        this.conditionOnReturn = conditionOnReturn;
+        this.bookAuthor = bookAuthor;
+
     }
 
     public LoanItemsDto(LoanItems entity) {
 //        this.id = entity.getId();
-//        this.loanId = entity.getLoan().getId();
+        this.loanId = entity.getLoan().getId();
         this.bookId = entity.getBook().getId();
         this.bookTitle = entity.getBook().getTitle();
-        this.conditionOnLoan = entity.getConditionOnLoan();
-        this.conditionOnReturn = entity.getConditionOnReturn();
+        this.bookAuthor = entity.getBook().getAuthor();
+
     }
 
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getLoanId() {
-        return loanId;
-    }
-
-    public void setLoanId(Long loanId) {
-        this.loanId = loanId;
-    }
 
     public Long getBookId() {
         return bookId;
@@ -69,19 +53,11 @@ public class LoanItemsDto {
         this.bookTitle = bookTitle;
     }
 
-    public Condition getConditionOnLoan() {
-        return conditionOnLoan;
+    public String getBookAuthor() {
+        return bookAuthor;
     }
 
-    public void setConditionOnLoan(Condition conditionOnLoan) {
-        this.conditionOnLoan = conditionOnLoan;
-    }
-
-    public Condition getConditionOnReturn() {
-        return conditionOnReturn;
-    }
-
-    public void setConditionOnReturn(Condition conditionOnReturn) {
-        this.conditionOnReturn = conditionOnReturn;
+    public void setBookAuthor(String bookAuthor) {
+        this.bookAuthor = bookAuthor;
     }
 }

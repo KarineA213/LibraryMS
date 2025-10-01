@@ -1,30 +1,32 @@
 package com.codingSamurai.libraryMS.dto;
 
 import com.codingSamurai.libraryMS.entities.Loan;
-import com.codingSamurai.libraryMS.entities.LoanItems;
 import com.codingSamurai.libraryMS.entities.Students;
+import com.codingSamurai.libraryMS.entities.enums.Condition;
 import com.codingSamurai.libraryMS.entities.enums.LoanStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-
 public class LoanDto {
 
+
     private Long id;
+
     private List<LoanItemsDto> loanItems;
-    private Students students;
+    private LoanStudentsDto loanStudents;
     private LocalDateTime loanDate;
     private LocalDateTime dueDate;
     private LocalDateTime returnDate;
     private LoanStatus status;
+//    private Condition conditionOnLoan;
+//    private Condition conditionOnReturn;
 
-    public LoanDto(Long id, List<LoanItemsDto> loanItems, Students student,
-                   LocalDateTime loanDate, LocalDateTime dueDate,
-                   LocalDateTime returnDate, LoanStatus status) {
+
+    public LoanDto(Long id, List<LoanItemsDto> loanItems, LoanStudentsDto loanStudents, LocalDateTime loanDate, LocalDateTime dueDate, LocalDateTime returnDate, LoanStatus status) {
         this.id = id;
         this.loanItems = loanItems;
-        this.students = students;
+        this.loanStudents = loanStudents;
         this.loanDate = loanDate;
         this.dueDate = dueDate;
         this.returnDate = returnDate;
@@ -33,21 +35,27 @@ public class LoanDto {
 
     public LoanDto(Loan entity) {
         id = entity.getId();
-        students = entity.getStudents();
+        loanItems = entity.getLoanItems().stream().map(LoanItemsDto::new).collect(Collectors.toList());
+        loanStudents = new LoanStudentsDto(entity.getStudents());
         loanDate = entity.getLoanDate();
         dueDate = entity.getDueDate();
         returnDate = entity.getReturnDate();
         status = entity.getStatus();
-
-        if (entity.getLoanItems() != null) {
-            this.loanItems = entity.getLoanItems().stream()
-                    .map(LoanItemsDto::new)
-                    .collect(Collectors.toList());
-        }
     }
 
-    public LoanDto() {
-    }
+
+//    public LoanDto(Loan entity) {
+//
+//        id = entity.getId();
+//        loanItems = entity.getLoanItems().stream().map(LoanItemsDto::new).collect(Collectors.toList());
+//        loanStudents = new LoanStudentsDto(entity.getStudents().getName().toUpperCase());
+//        loanDate = entity.getLoanDate();
+//        dueDate = entity.getDueDate();
+//        returnDate = entity.getReturnDate();
+//        status = entity.getStatus();
+//
+//    }
+
 
     public Long getId() {
         return id;
@@ -65,12 +73,13 @@ public class LoanDto {
         this.loanItems = loanItems;
     }
 
-    public Students getStudent() {
-        return students;
+
+    public LoanStudentsDto getLoanStudents() {
+        return loanStudents;
     }
 
-    public void setStudent(Students student) {
-        this.students = students;
+    public void setLoanStudents(LoanStudentsDto loanStudents) {
+        this.loanStudents = loanStudents;
     }
 
     public LocalDateTime getLoanDate() {

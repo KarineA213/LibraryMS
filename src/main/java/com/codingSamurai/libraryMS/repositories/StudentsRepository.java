@@ -1,7 +1,12 @@
 package com.codingSamurai.libraryMS.repositories;
 
+import com.codingSamurai.libraryMS.dto.StudentsDto;
 import com.codingSamurai.libraryMS.entities.Students;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface StudentsRepository extends JpaRepository<Students, Integer> {
+import java.util.List;
+
+public interface StudentsRepository extends JpaRepository<Students, Long> {
+
+    Long id(Long id);
 }

@@ -9,22 +9,17 @@ import java.util.List;
 public class Students {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
     private String course;
     private String email;
     private String phone;
 
-
-
-    @OneToMany(mappedBy = "students", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @Where(clause = "status = 'ACTIVE'")
+    @OneToMany(mappedBy = "students", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Loan> borrowedBooks;
 
-    @OneToMany(mappedBy = "students", fetch = FetchType.LAZY)
-    @Where(clause = "status = 'CONCLUDED'")
-    private List<Loan> returnedBooks;
+
 
     public Students(Long id, String name, String course, String email, String phone, List<Loan> borrowedBooks, List<Loan> returnedBooks) {
         this.id = id;
@@ -33,7 +28,7 @@ public class Students {
         this.email = email;
         this.phone = phone;
         this.borrowedBooks = borrowedBooks;
-        this.returnedBooks = returnedBooks;
+//        this.returnedBooks = returnedBooks;
     }
 
     public Students() {
@@ -87,12 +82,13 @@ public class Students {
         this.borrowedBooks = borrowedBooks;
     }
 
-    public List<Loan> getReturnedBooks() {
-        return returnedBooks;
-    }
+//    public List<Loan> getReturnedBooks() {
+//        return returnedBooks;
+//    }
 
-    public void setReturnedBooks(List<Loan> returnedBooks) {
-        this.returnedBooks = returnedBooks;
-    }
+//    public void setReturnedBooks(List<Loan> returnedBooks) {
+//        this.returnedBooks = returnedBooks;
+//    }
+
 
 }
